@@ -61,7 +61,7 @@ These are all executed from the command line, all writing `python -m parse_medpc
 An example command is shown below:
 
 ```sh
-ython -m parse_medpc_file --data-number=138 --date=2023-07-12 --time=11:05 --json
+python -m parse_medpc_file --data-number=138 --date=2023-07-12 --time=11:05 --json
 ```
 
 Happy coding!
