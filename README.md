@@ -37,7 +37,7 @@ options:
 HELLO THERE!!
 ```
 
-### Using the FileParser module
+### Using the ParseMedPCFile module
 
 There are five total options for input to parse the file, three describing the file you are inputting, and one describing the format you want your file to be on completion of the file parsing (either `*.mat` or `*.json`)
 
