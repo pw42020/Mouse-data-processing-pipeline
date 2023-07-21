@@ -41,6 +41,9 @@ class MedPCFileParser:
         if the file is a .json file
     filename: str
         name of file that is being interpreted
+    gui: bool
+        tells function whether or not you're using the
+        Graphical User Interface option
 
     Notes
     -----
@@ -51,6 +54,7 @@ class MedPCFileParser:
     filename: str
     mat: bool
     json: bool
+    gui: bool
 
     def __post_init__(self) -> None:
         """Post-initialization of class"""
@@ -68,7 +72,7 @@ class MedPCFileParser:
         OSError
             If file not found
         """
-        txt_file: str = self.filename + ".txt"
+        txt_file: str = self.filename + ".txt" if not self.gui else self.filename
         if not os.path.isfile(txt_file):
             raise OSError(f"File {txt_file} not found")
 
@@ -89,7 +93,8 @@ class MedPCFileParser:
         mapped_values: dict[str, Any]
             the mapped values in question
         """
-        savemat(self.filename + ".mat", mapped_values)
+        file: str = self.filename[:-4] if self.filename[-4:] == ".txt" else self.filename
+        savemat(file + ".mat", mapped_values)
 
     def save_file_json(self, mapped_values: dict[str, Any]) -> None:
         """Saving the mapped values as .json file
@@ -99,8 +104,9 @@ class MedPCFileParser:
         mapped_values: dict[str, Any]
             the mapped values in question
         """
-        with open(self.filename + ".json", "w", encoding="utf-8") as file:
-            json.dump(mapped_values, file, indent=4)
+        file: str = self.filename[:-4] if self.filename[-4:] == ".txt" else self.filename
+        with open(file + ".json", "w", encoding="utf-8") as f:
+            json.dump(mapped_values, f, indent=4)
 
     def parse_file_contents(self, file: TextIO) -> dict[str, Any]:
         """Parse the file contents of the file opened

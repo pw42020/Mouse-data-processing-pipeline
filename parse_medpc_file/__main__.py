@@ -1,9 +1,10 @@
 """Converting Moorman/Vazey MED-PC data files to json data or
 .mat file dependent on arguments passed"""
-import sys
 import argparse
-from datetime import date, datetime
 from typing import Protocol
+from datetime import date, datetime
+from tkinter import Tk
+from tkinter.filedialog import askopenfilename
 from .parse_file import MedPCFileParser
 
 
@@ -39,15 +40,15 @@ def create_cmd_line_arguments() -> None:
 
     Parameters
     ----------
-    1. --data-number: int
+    1. `--data-number`: int
         number, like 136, 137, ... for the data
-    2. --date: str
+    2. `--date`: str
         formatted yr-mo-date (i.e. 2023-07-21)
-    3. --time: str
+    3. `--time`: str
         formatted hr:min (i.e. 11:04)
-    4. --mat: bool
+    4. `--mat`: bool
         format the file as a .mat
-    5. --json: bool
+    5. `--json`: bool
         format the file as a .json
 
     Notes
@@ -59,10 +60,12 @@ def create_cmd_line_arguments() -> None:
 
     now: datetime = datetime.now()  # create datetime object for now for use
     # in --time
+    parser.add_argument("--gui", default=False, action="store_true")
 
-    parser.add_argument("--data-number", type=int, required=True)
+    parser.add_argument("--data-number", type=int, default=0)
     parser.add_argument("--date", type=str, default=date.today())
     parser.add_argument("--time", type=str, default=now.strftime("%H:%M"))
+
     # create mutually exclusive data
     mutual_exclusion = parser.add_mutually_exclusive_group()
     mutual_exclusion.add_argument("--mat", default=False, action="store_true")
@@ -82,18 +85,21 @@ def create_filename(*, args: FilenameArguments) -> str:
         filename for the file that will be created
     """
 
-    time = args.time.split(":")
-    args.time = f"{time[0]}h{time[1]}m"
+    time_split: list[str] = args.time.split(":")
+    time: str = f"{time_split[0]}h{time_split[1]}m"
 
-    return f"{args.date}_{args.time}_Subject {args.data_number}"
+    return f"{args.date}_{time}_Subject {args.data_number}"
 
 
 def main() -> None:
     """Main function for convert_file.py"""
     args = parser.parse_args()
-    filename: str = create_filename(args=args)
 
-    MedPCFileParser(filename=filename, mat=args.mat, json=args.json).parse_file()
+    # opening Tk window to get file
+    Tk().withdraw()
+    filename: str = askopenfilename() if args.gui else create_filename(args=args)
+
+    MedPCFileParser(filename=filename, mat=args.mat, json=args.json, gui=args.gui).parse_file()
 
 
 # create Argument Parser
