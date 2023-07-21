@@ -153,10 +153,10 @@ class MedPCFileParser:
                 i, mapped_values[split_line[0]] = self.find_key_value(
                     file=file_lines, i=i+1
                 )
-                print(f"Added {mapped_values[split_line[0]]} in position {split_line[0]}")
+                # print(f"Added {mapped_values[split_line[0]]} in position {split_line[0]}")
                 continue
 
-            print(f"Adding {split_line[1]} to mapped_values")
+            # print(f"Adding {split_line[1]} to mapped_values")
             # one line key-value pair
             mapped_values[split_line[0]] = (
                 float(split_line[1]) if is_float(split_line[1]) else split_line[1]
