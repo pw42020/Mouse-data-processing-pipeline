@@ -14,7 +14,7 @@ Once the repository is downloaded, you should see the repository copied over, wi
 
 To set up the module, type:
 ```sh
-cd Mouse-data-processing-pipeline && pip install -e .
+cd Mouse-data-processing-pipeline; pip install -e .
 ```
 This will enter your current working directory as the GitHub repository you just copied, and then install the FileParser module using pip into Python.
 
