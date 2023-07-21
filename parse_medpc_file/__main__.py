@@ -106,5 +106,4 @@ parser = argparse.ArgumentParser(
 create_cmd_line_arguments()
 
 if __name__ == "__main__":
-    ret: int = main()
-    sys.exit(ret)
+    main()
